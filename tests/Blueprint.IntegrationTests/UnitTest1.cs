@@ -1,4 +1,4 @@
-﻿namespace Menuhat.IntegrationTests;
+namespace Blueprint.IntegrationTests;
 
 public class UnitTest1
 {

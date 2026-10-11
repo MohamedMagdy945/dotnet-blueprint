@@ -1,6 +1,6 @@
-namespace AppCore.API
-{
-    public class Program
+namespace Blueprint.API;
+
+public static class Program
     {
         public static void Main(string[] args)
         {
@@ -37,4 +37,4 @@ namespace AppCore.API
             app.Run();
         }
     }
-}
+

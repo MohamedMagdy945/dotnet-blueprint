@@ -1,6 +1,6 @@
-namespace AppCore.API
-{
-    public class WeatherForecast
+namespace Blueprint.API;
+
+public class WeatherForecast
     {
         public DateOnly Date { get; set; }
 
@@ -10,4 +10,4 @@ namespace AppCore.API
 
         public string? Summary { get; set; }
     }
-}
+

@@ -1,0 +1,15 @@
+<Solution>
+  <Folder Name="/docs/">
+    <File Path="docs/1-PHASES.md" />
+  </Folder>
+  <Folder Name="/src/">
+    <Project Path="src/Blueprint.API/Blueprint.API.csproj" />
+    <Project Path="src/Blueprint.Application/Blueprint.Application.csproj" />
+    <Project Path="src/Blueprint.Domain/Blueprint.Domain.csproj" />
+    <Project Path="src/Blueprint.Infrastructure/Blueprint.Infrastructure.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/Blueprint.IntegrationTests/Blueprint.IntegrationTests.csproj" />
+    <Project Path="tests/Blueprint.UnitTests/Blueprint.UnitTests.csproj" />
+  </Folder>
+</Solution>
