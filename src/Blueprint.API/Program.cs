@@ -1,3 +1,4 @@
+using Blueprint.API.Extensions;
 using Blueprint.API.RequestPipeline;
 
 namespace Blueprint.API;
@@ -25,6 +26,8 @@ public static class Program
 
         app.UseAuthorization();
 
+        app.MapEndpoints(typeof(Program).Assembly);
+        
         app.Run();
     }
 }

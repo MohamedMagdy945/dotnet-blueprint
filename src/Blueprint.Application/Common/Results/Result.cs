@@ -1,31 +1,5 @@
 ﻿namespace Blueprint.Application.Common.Results;
 
-public sealed class Result
-{
-    public bool IsSuccess { get; }
-    public bool IsFailure => !IsSuccess;
-
-    public string? ErrorCode { get; }
-    public string? ErrorMessage { get; }
-
-    private Result(
-        bool isSuccess,
-        string? errorCode,
-        string? errorMessage)
-    {
-        IsSuccess = isSuccess;
-        ErrorCode = errorCode;
-        ErrorMessage = errorMessage;
-    }
-
-    public static Result Success()
-        => new(true, null, null);
-
-    public static Result Failure(
-        string errorCode,
-        string errorMessage)
-        => new(false, errorCode, errorMessage);
-}
 
 public sealed class Result<T>
 {
@@ -34,13 +8,13 @@ public sealed class Result<T>
 
     public T? Value { get; }
 
-    public string? ErrorCode { get; }
+    public ErrorCode? ErrorCode { get; }
     public string? ErrorMessage { get; }
 
     private Result(
         bool isSuccess,
         T? value,
-        string? errorCode,
+        ErrorCode? errorCode,
         string? errorMessage)
     {
         IsSuccess = isSuccess;
@@ -53,7 +27,7 @@ public sealed class Result<T>
         => new(true, value, null, null);
 
     public static Result<T> Failure(
-        string errorCode,
+        ErrorCode errorCode,
         string errorMessage)
         => new(false, default, errorCode, errorMessage);
 }

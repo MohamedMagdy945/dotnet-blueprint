@@ -13,12 +13,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Common\Endpoints\" />
-    <Folder Include="Configuration\" />
-    <Folder Include="Extensions\" />
-    <Folder Include="features\Authentication\" />
-    <Folder Include="features\Categories\" />
-    <Folder Include="features\products\" />
+    <Folder Include="Configurations\Endpoints\" />
   </ItemGroup>
 
 </Project>
