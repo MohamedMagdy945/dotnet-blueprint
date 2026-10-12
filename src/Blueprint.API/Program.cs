@@ -15,9 +15,10 @@ public static class Program
 
         var app = builder.Build();
 
+        // Configure the HTTP request pipeline.
+
         app.UseCors();
 
-        // Configure the HTTP request pipeline.
         builder.Services.AddProblemDetails();
 
         builder.Services.AddExceptionHandler<GlobalExceptionHandler>();

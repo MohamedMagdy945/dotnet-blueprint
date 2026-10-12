@@ -14,6 +14,17 @@ public static class DependencyInjection
             .GetSection("Cors:AllowedOrigins")
             .Get<string[]>() ?? [];
 
+        services.AddCors(options =>
+        {
+            options.AddDefaultPolicy(policy =>
+            {
+                policy
+                    .WithOrigins(allowedOrigins)
+                    .AllowAnyHeader()
+                    .AllowAnyMethod();
+            });
+        });
+
         services.AddApplicationServices();
         services.AddInfrastructureServices(configuration);
         return services;
