@@ -1,40 +1,30 @@
+using Blueprint.API.RequestPipeline;
+
 namespace Blueprint.API;
 
 public static class Program
+{
+    public static void Main(string[] args)
     {
-        public static void Main(string[] args)
-        {
-            var builder = WebApplication.CreateBuilder(args);
+        var builder = WebApplication.CreateBuilder(args);
 
-            // Add services to the container.
-            builder.Services.AddAuthorization();
+        // Add services to the container.
+        builder.Services.AddAuthorization();
+        builder.Services.AddApiServices(builder.Configuration);
 
 
-            var app = builder.Build();
+        var app = builder.Build();
 
-            // Configure the HTTP request pipeline.
+        app.UseCors();
 
-            app.UseAuthorization();
+        // Configure the HTTP request pipeline.
+        builder.Services.AddProblemDetails();
 
-            var summaries = new[]
-            {
-                "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-            };
+        builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
 
-            app.MapGet("/weatherforecast", (HttpContext httpContext) =>
-            {
-                var forecast = Enumerable.Range(1, 5).Select(index =>
-                    new WeatherForecast
-                    {
-                        Date = DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
-                        TemperatureC = Random.Shared.Next(-20, 55),
-                        Summary = summaries[Random.Shared.Next(summaries.Length)]
-                    })
-                    .ToArray();
-                return forecast;
-            });
+        app.UseAuthorization();
 
-            app.Run();
-        }
+        app.Run();
     }
+}
 

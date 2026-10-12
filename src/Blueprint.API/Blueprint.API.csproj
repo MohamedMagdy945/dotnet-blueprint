@@ -7,4 +7,18 @@
     <RootNamespace>Blueprint.API</RootNamespace>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Blueprint.Application\Blueprint.Application.csproj" />
+    <ProjectReference Include="..\Blueprint.Infrastructure\Blueprint.Infrastructure.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Common\Endpoints\" />
+    <Folder Include="Configuration\" />
+    <Folder Include="Extensions\" />
+    <Folder Include="features\Authentication\" />
+    <Folder Include="features\Categories\" />
+    <Folder Include="features\products\" />
+  </ItemGroup>
+
 </Project>
