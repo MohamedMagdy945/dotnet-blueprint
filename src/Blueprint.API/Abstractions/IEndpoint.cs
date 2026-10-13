@@ -1,4 +1,4 @@
-namespace Blueprint.API.Common.Abstractions;
+namespace Blueprint.API.Abstractions;
 
 public interface IEndpoint
 {

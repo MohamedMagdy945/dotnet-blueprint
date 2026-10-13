@@ -1,6 +1,8 @@
 using Blueprint.API.Extensions;
-using Blueprint.API.RequestPipeline;
+using Blueprint.API.Infrastructure.Handlers;
+using Blueprint.API.Infrastructure.Middlewares;
 using Serilog;
+using Serilog.Enrichers.Span;
 
 namespace Blueprint.API;
 
@@ -18,10 +20,10 @@ public static class Program
 
             // 1. Serilog Setup
             builder.Host.UseSerilog((context, services, configuration) => configuration
-                .ReadFrom.Configuration(context.Configuration)
-                .ReadFrom.Services(services)
-                .Enrich.FromLogContext());
-
+            .ReadFrom.Configuration(context.Configuration)
+            .ReadFrom.Services(services)
+            .Enrich.FromLogContext()
+            .Enrich.WithSpan());
             builder.Services.AddAuthorization();
             builder.Services.AddApiServices(builder.Configuration);
 
@@ -32,14 +34,10 @@ public static class Program
 
             // 3. Configure the HTTP Request Pipeline
 
-            app.UseExceptionHandler();
 
             app.UseMiddleware<TraceIdMiddleware>();
-
-            app.UseSerilogRequestLogging(options =>
-            {
-                options.MessageTemplate = "HTTP {RequestMethod} {RequestPath} responded {StatusCode} in {Elapsed:0.0000} ms";
-            });
+            app.UseMiddleware<RequestLoggingMiddleware>();
+            app.UseExceptionHandler();
 
             app.UseCors();
 

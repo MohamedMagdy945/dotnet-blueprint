@@ -14,12 +14,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Blueprint.Domain\Blueprint.Domain.csproj" />
+    <None Include="Features\Orders\Create\CreateOrderRequest.cs" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Common\" />
-    <Folder Include="Features\" />
+    <ProjectReference Include="..\Blueprint.Domain\Blueprint.Domain.csproj" />
   </ItemGroup>
 
   <ItemGroup>
@@ -31,6 +30,8 @@
   <ItemGroup>
     <PackageReference Include="FluentValidation" Version="12.2.0" />
     <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="12.2.0" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="10.0.12" />
+    <PackageReference Include="Scrutor" Version="7.0.0" />
   </ItemGroup>
 
 </Project>

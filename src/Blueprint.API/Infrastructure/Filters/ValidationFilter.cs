@@ -1,6 +1,6 @@
 using FluentValidation;
 
-namespace Blueprint.API.Filters;
+namespace Blueprint.API.Infrastructure.Filters;
 
 public sealed class ValidationFilter<TRequest>(
     IValidator<TRequest> validator) : IEndpointFilter

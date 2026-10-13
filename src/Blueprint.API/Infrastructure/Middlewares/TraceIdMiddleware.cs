@@ -1,16 +1,10 @@
 ﻿using System.Diagnostics;
 
-namespace Blueprint.API.RequestPipeline;
+namespace Blueprint.API.Infrastructure.Middlewares;
 
-public sealed class TraceIdMiddleware
+public sealed class TraceIdMiddleware(RequestDelegate next)
 {
     private const string TraceIdHeader = "X-Trace-ID";
-    private readonly RequestDelegate _next;
-
-    public TraceIdMiddleware(RequestDelegate next)
-    {
-        _next = next;
-    }
 
     public async Task InvokeAsync(HttpContext context)
     {
@@ -25,6 +19,6 @@ public sealed class TraceIdMiddleware
             return Task.CompletedTask;
         });
 
-        await _next(context);
+        await next(context);
     }
 }
