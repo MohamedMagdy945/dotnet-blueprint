@@ -8,12 +8,20 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Blueprint.Application\Blueprint.Application.csproj" />
-    <ProjectReference Include="..\Blueprint.Infrastructure\Blueprint.Infrastructure.csproj" />
+    <Compile Remove="Configurations\**" />
+    <Content Remove="Configurations\**" />
+    <EmbeddedResource Remove="Configurations\**" />
+    <None Remove="Configurations\**" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Configurations\Endpoints\" />
+    <PackageReference Include="Serilog.AspNetCore" Version="10.0.0" />
+    <PackageReference Include="Serilog.Sinks.Console" Version="6.1.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Blueprint.Application\Blueprint.Application.csproj" />
+    <ProjectReference Include="..\Blueprint.Infrastructure\Blueprint.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>

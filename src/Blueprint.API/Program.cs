@@ -1,5 +1,6 @@
 using Blueprint.API.Extensions;
 using Blueprint.API.RequestPipeline;
+using Serilog;
 
 namespace Blueprint.API;
 
@@ -7,28 +8,54 @@ public static class Program
 {
     public static void Main(string[] args)
     {
-        var builder = WebApplication.CreateBuilder(args);
+        Log.Logger = new LoggerConfiguration()
+            .WriteTo.Console()
+            .CreateBootstrapLogger();
 
-        // Add services to the container.
-        builder.Services.AddAuthorization();
-        builder.Services.AddApiServices(builder.Configuration);
+        try
+        {
+            var builder = WebApplication.CreateBuilder(args);
 
+            // 1. Serilog Setup
+            builder.Host.UseSerilog((context, services, configuration) => configuration
+                .ReadFrom.Configuration(context.Configuration)
+                .ReadFrom.Services(services)
+                .Enrich.FromLogContext());
 
-        var app = builder.Build();
+            builder.Services.AddAuthorization();
+            builder.Services.AddApiServices(builder.Configuration);
 
-        // Configure the HTTP request pipeline.
+            builder.Services.AddProblemDetails();
+            builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
 
-        app.UseCors();
+            var app = builder.Build();
 
-        builder.Services.AddProblemDetails();
+            // 3. Configure the HTTP Request Pipeline
 
-        builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
+            app.UseExceptionHandler();
 
-        app.UseAuthorization();
+            app.UseMiddleware<TraceIdMiddleware>();
 
-        app.MapEndpoints(typeof(Program).Assembly);
-        
-        app.Run();
+            app.UseSerilogRequestLogging(options =>
+            {
+                options.MessageTemplate = "HTTP {RequestMethod} {RequestPath} responded {StatusCode} in {Elapsed:0.0000} ms";
+            });
+
+            app.UseCors();
+
+            app.UseAuthorization();
+
+            app.MapEndpoints(typeof(Program).Assembly);
+
+            app.Run();
+        }
+        catch (Exception ex)
+        {
+            Log.Fatal(ex, "Application terminated unexpectedly");
+        }
+        finally
+        {
+            Log.CloseAndFlush();
+        }
     }
 }
-

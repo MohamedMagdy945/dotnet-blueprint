@@ -25,6 +25,9 @@ public static class DependencyInjection
             });
         });
 
+
+
+
         services.AddApplicationServices();
         services.AddInfrastructureServices(configuration);
         return services;

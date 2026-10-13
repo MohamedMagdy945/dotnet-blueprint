@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
+using System.Diagnostics;
 
 namespace Blueprint.API.RequestPipeline;
 
@@ -25,8 +26,8 @@ public sealed class GlobalExceptionHandler : IExceptionHandler
             exception,
             "An unhandled exception occurred while processing the request.");
 
-        httpContext.Response.StatusCode =
-            StatusCodes.Status500InternalServerError;
+        var traceId = Activity.Current?.TraceId.ToString()
+            ?? httpContext.TraceIdentifier;
 
         var problemDetails = new ProblemDetails
         {
@@ -35,6 +36,11 @@ public sealed class GlobalExceptionHandler : IExceptionHandler
             Detail = "An unexpected error occurred.",
             Instance = httpContext.Request.Path
         };
+
+        problemDetails.Extensions["traceId"] = traceId;
+
+        httpContext.Response.StatusCode =
+            StatusCodes.Status500InternalServerError;
 
         await _problemDetailsService.WriteAsync(
             new ProblemDetailsContext
