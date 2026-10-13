@@ -1,3 +1,4 @@
+
 using Blueprint.Application.Common.Results;
 
 namespace Blueprint.API.Extensions;

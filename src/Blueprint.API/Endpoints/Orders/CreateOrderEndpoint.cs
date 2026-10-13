@@ -1,7 +1,6 @@
 ﻿using Blueprint.API.Abstractions;
 using Blueprint.API.Extensions;
 using Blueprint.Application.Features.Orders.Create;
-
 namespace Blueprint.API.Endpoints.Orders;
 
 public sealed class CreateOrderEndpoint : IEndpoint
@@ -11,7 +10,7 @@ public sealed class CreateOrderEndpoint : IEndpoint
         app.MapPost("orders", HandleAsync)
             .WithName("CreateOrder")
             .WithTags("Orders")
-            .WithValidation<CreateOrderCommand>()
+            .WithValidation<CreateOrderRequest>()
             .Produces<CreateOrderResponse>(StatusCodes.Status201Created)
             .ProducesProblem(StatusCodes.Status400BadRequest);
     }
@@ -24,9 +23,8 @@ public sealed class CreateOrderEndpoint : IEndpoint
     {
         logger.LogInformation("Handling CreateOrder request");
 
-        var command = new CreateOrderCommand();
-        var result = await handler.HandleAsync(command, ct);
+        var result = await handler.HandleAsync(request, ct);
 
-        return Results.Created($"/api/orders/{result.OrderId}", result);
+        return result.ToHttpResult();
     }
 }
