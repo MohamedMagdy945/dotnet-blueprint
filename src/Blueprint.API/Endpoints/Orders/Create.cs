@@ -3,7 +3,7 @@ using Blueprint.API.Extensions;
 using Blueprint.Application.Features.Orders.Create;
 namespace Blueprint.API.Endpoints.Orders;
 
-public sealed class CreateOrderEndpoint : IEndpoint
+public sealed class Create : IEndpoint
 {
     public void MapEndpoint(IEndpointRouteBuilder app)
     {
@@ -18,7 +18,7 @@ public sealed class CreateOrderEndpoint : IEndpoint
     public static async Task<IResult> HandleAsync(
         CreateOrderRequest request,
         CreateOrderHandler handler,
-        ILogger<CreateOrderEndpoint> logger,
+        ILogger<Create> logger,
         CancellationToken ct)
     {
         logger.LogInformation("Handling CreateOrder request");

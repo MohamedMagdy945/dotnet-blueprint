@@ -11,25 +11,43 @@ public sealed class GlobalExceptionHandler(ILogger<GlobalExceptionHandler> logge
         Exception exception,
         CancellationToken cancellationToken)
     {
-        logger.LogError(
-            exception,
-            "An unhandled exception occurred while processing the request.");
-
         var traceId = Activity.Current?.TraceId.ToHexString()
             ?? httpContext.TraceIdentifier;
 
+        var (statusCode, title, detail) = exception switch
+        {
+            BadHttpRequestException => (
+                StatusCodes.Status400BadRequest,
+                "Bad Request",
+                "A non-empty request body is required."
+            ),
+
+            _ => (
+                StatusCodes.Status500InternalServerError,
+                "Internal Server Error",
+                "An unexpected error occurred."
+            )
+        };
+
+        if (statusCode == StatusCodes.Status500InternalServerError)
+        {
+            logger.LogError(exception, "Unhandled exception: {Path}", httpContext.Request.Path);
+        }
+
         var problemDetails = new ProblemDetails
         {
-            Status = StatusCodes.Status500InternalServerError,
-            Title = "Internal Server Error",
-            Detail = "An unexpected error occurred.",
+            Status = statusCode,
+            Title = title,
+            Detail = detail,
             Instance = httpContext.Request.Path,
             Extensions = { ["traceId"] = traceId }
         };
 
-        httpContext.Response.StatusCode = StatusCodes.Status500InternalServerError;
+        httpContext.Response.StatusCode = statusCode;
         await httpContext.Response.WriteAsJsonAsync(problemDetails, cancellationToken);
 
         return true;
     }
+
+
 }

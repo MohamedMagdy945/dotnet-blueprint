@@ -34,10 +34,9 @@ public static class Program
 
             // 3. Configure the HTTP Request Pipeline
 
-
-            app.UseMiddleware<TraceIdMiddleware>();
             app.UseMiddleware<RequestLoggingMiddleware>();
             app.UseExceptionHandler();
+            app.UseMiddleware<TraceIdMiddleware>();
 
             app.UseCors();
 
