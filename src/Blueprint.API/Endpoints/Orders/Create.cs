@@ -21,7 +21,6 @@ public sealed class Create : IEndpoint
         ILogger<Create> logger,
         CancellationToken ct)
     {
-        logger.LogInformation("Handling CreateOrder request");
 
         var result = await handler.HandleAsync(request, ct);
 
