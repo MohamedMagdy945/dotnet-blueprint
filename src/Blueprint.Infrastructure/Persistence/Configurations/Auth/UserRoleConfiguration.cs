@@ -1,4 +1,4 @@
-﻿using Blueprint.Domain.Entities.Auth;
+﻿using Blueprint.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 

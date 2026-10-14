@@ -1,7 +1,7 @@
-﻿using Blueprint.Domain.Common.Entities;
+﻿using Blueprint.Domain.Common.BasicEntities;
 using System.Data;
 
-namespace Blueprint.Domain.Entities.Auth;
+namespace Blueprint.Domain.Entities;
 
 public class User : SoftDeletableEntity
 {

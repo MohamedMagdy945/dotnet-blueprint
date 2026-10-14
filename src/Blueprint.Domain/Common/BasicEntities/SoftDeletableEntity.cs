@@ -1,4 +1,4 @@
-﻿namespace Blueprint.Domain.Common.Entities;
+﻿namespace Blueprint.Domain.Common.BasicEntities;
 
 public abstract class SoftDeletableEntity : AuditableEntity
 {

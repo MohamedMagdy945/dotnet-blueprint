@@ -10,6 +10,5 @@ public sealed class CreateOrderValidator : AbstractValidator<CreateOrderRequest>
             .NotEmpty()
             .WithMessage("CustomerId is required.");
 
-
     }
 }

@@ -7,15 +7,17 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="ExternalServices\**" />
+    <EmbeddedResource Remove="ExternalServices\**" />
+    <None Remove="ExternalServices\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\Blueprint.Application\Blueprint.Application.csproj" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="ExternalServices\" />
-    <Folder Include="Services\" />
-  </ItemGroup>
-
-  <ItemGroup>
+    <PackageReference Include="BCrypt.Net-Next" Version="4.2.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="10.0.13" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="10.0.13">
       <PrivateAssets>all</PrivateAssets>

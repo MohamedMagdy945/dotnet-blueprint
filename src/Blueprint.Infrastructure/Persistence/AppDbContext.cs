@@ -1,12 +1,12 @@
-﻿using Blueprint.Domain.Entities;
-using Blueprint.Domain.Entities.Auth;
+﻿using Blueprint.Application.Common.Abstractions;
+using Blueprint.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using System.Reflection;
 
 namespace Blueprint.Infrastructure.Persistence;
 
 public class AppDbContext(DbContextOptions<AppDbContext> options)
-    : DbContext(options)
+    : DbContext(options), IAppDbContext
 {
     public DbSet<Product> Products => Set<Product>();
 

@@ -1,6 +1,6 @@
-﻿using Blueprint.Domain.Common.Entities;
+﻿using Blueprint.Domain.Common.BasicEntities;
 
-namespace Blueprint.Domain.Entities.Auth;
+namespace Blueprint.Domain.Entities;
 
 public class Role : BaseEntity
 {

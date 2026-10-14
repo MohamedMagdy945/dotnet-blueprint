@@ -1,4 +1,4 @@
-﻿namespace Blueprint.Domain.Entities.Auth;
+﻿namespace Blueprint.Domain.Entities;
 
 public class UserRole
 {

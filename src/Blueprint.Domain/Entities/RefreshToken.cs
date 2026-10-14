@@ -1,10 +1,10 @@
-﻿using Blueprint.Domain.Common.Entities;
+﻿using Blueprint.Domain.Common.BasicEntities;
 
-namespace Blueprint.Domain.Entities.Auth;
+namespace Blueprint.Domain.Entities;
 
 public class RefreshToken : BaseEntity
 {
-    public string Token { get; private set; } = string.Empty;
+    public string TokenHash { get; private set; } = string.Empty;
     public DateTime ExpiresOnUtc { get; private set; }
     public DateTime CreatedOnUtc { get; private set; }
     public DateTime? RevokedOnUtc { get; private set; }
@@ -19,12 +19,12 @@ public class RefreshToken : BaseEntity
 
     private RefreshToken() : base() { }
 
-    public static RefreshToken Create(string token, DateTime expiresOnUtc, Guid userId)
+    public static RefreshToken Create(string tokenHash, DateTime expiresOnUtc, Guid userId)
     {
         return new RefreshToken
         {
             Id = Guid.NewGuid(),
-            Token = token,
+            TokenHash = tokenHash,
             ExpiresOnUtc = expiresOnUtc,
             CreatedOnUtc = DateTime.UtcNow,
             UserId = userId
