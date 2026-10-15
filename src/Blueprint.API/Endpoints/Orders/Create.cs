@@ -11,7 +11,6 @@ public sealed class Create : IEndpoint
             .WithName("CreateOrder")
             .WithTags("Orders")
             .WithValidation<CreateOrderRequest>()
-            .RequireAuthorization("ManagerOrAbove")
             .Produces<CreateOrderResponse>(StatusCodes.Status201Created)
             .ProducesProblem(StatusCodes.Status400BadRequest);
     }

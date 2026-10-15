@@ -1,3 +1,4 @@
+using Asp.Versioning;
 using Blueprint.API.Abstractions;
 using System.Reflection;
 
@@ -9,18 +10,24 @@ public static class EndpointRegistrationExtensions
         this IEndpointRouteBuilder app,
         Assembly assembly)
     {
-        // 1. Create the base /api group internally
-        var apiGroup = app.MapGroup("/api")
+        // 1. تعريف الـ ApiVersionSet
+        var apiVersionSet = app.NewApiVersionSet()
+            .HasApiVersion(new ApiVersion(1, 0))
+            .HasApiVersion(new ApiVersion(2, 0))
+            .ReportApiVersions()
+            .Build();
+
+        var apiGroup = app.MapGroup("/api/v{version:apiVersion}")
+            .WithApiVersionSet(apiVersionSet)
+            .MapToApiVersion(1, 0)
             .ProducesProblem(StatusCodes.Status500InternalServerError);
 
-        // 2. Discover all classes implementing IEndpoint
         var endpointTypes = assembly
             .DefinedTypes
             .Where(type =>
                 type is { IsAbstract: false, IsInterface: false } &&
                 typeof(IEndpoint).IsAssignableFrom(type));
 
-        // 3. Register each endpoint against apiGroup instead of app
         foreach (var endpointType in endpointTypes)
         {
             if (Activator.CreateInstance(endpointType.AsType()) is IEndpoint endpoint)

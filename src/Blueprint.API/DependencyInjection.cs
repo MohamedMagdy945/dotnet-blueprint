@@ -1,6 +1,7 @@
 
 using Blueprint.API.Infrastructure.Configurations;
 using Blueprint.API.Infrastructure.Handlers;
+using System.Diagnostics;
 
 namespace Blueprint.API;
 
@@ -11,6 +12,17 @@ public static class DependencyInjection
         IConfiguration configuration)
     {
 
+        services.AddProblemDetails(options =>
+        {
+            options.CustomizeProblemDetails = context =>
+            {
+                context.ProblemDetails.Instance = $"{context.HttpContext.Request.Method} {context.HttpContext.Request.Path}";
+
+                context.ProblemDetails.Extensions["traceId"] = Activity.Current?.TraceId.ToHexString();
+
+                context.ProblemDetails.Extensions["timestamp"] = DateTime.UtcNow;
+            };
+        });
 
         services.AddAuthorization();
 

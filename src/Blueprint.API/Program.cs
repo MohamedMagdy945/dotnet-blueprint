@@ -31,6 +31,7 @@ public static class Program
             var app = builder.Build();
 
             // 3. Configure the HTTP Request Pipeline
+            app.UseSwaggerDocumentation();
 
             app.UseMiddleware<RequestLoggingMiddleware>();
             app.UseExceptionHandler();
