@@ -1,6 +1,6 @@
 ﻿namespace Blueprint.Infrastructure.Common.Settings;
 
-public sealed class TokenSettings
+public sealed class JwtSettings
 {
     public string SecretKey { get; init; } = string.Empty;
     public string Issuer { get; init; } = string.Empty;

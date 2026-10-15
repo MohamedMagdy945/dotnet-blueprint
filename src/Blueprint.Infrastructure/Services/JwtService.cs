@@ -9,12 +9,12 @@ using System.Text;
 
 namespace Blueprint.Infrastructure.Services;
 
-public class TokenService(IOptions<TokenSettings> options) : ITokenService
+public class JwtService(IOptions<JwtSettings> options) : IJwtService
 {
     private const string Roles = "roles";
     private const int RefreshTokenSize = 32;
 
-    private readonly TokenSettings _settings = options.Value;
+    private readonly JwtSettings _settings = options.Value;
 
     private static readonly JsonWebTokenHandler JwtHandler = new();
 

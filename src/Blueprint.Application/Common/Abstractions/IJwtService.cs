@@ -2,7 +2,7 @@
 
 namespace Blueprint.Application.Common.Abstractions;
 
-public interface ITokenService
+public interface IJwtService
 {
     AccessTokenResult GenerateAccessToken(UserClaims userClaims);
     RefreshTokenResult GenerateRefreshToken();

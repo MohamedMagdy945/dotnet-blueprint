@@ -6,7 +6,7 @@ namespace Blueprint.Application.Services;
 
 public class SessionService(
     IAppDbContext dbContext,
-    ITokenService tokenService
+    IJwtService tokenService
 )
 {
     public async Task<TokenResult> CreateAsync(UserClaims userClaims, CancellationToken ct = default)

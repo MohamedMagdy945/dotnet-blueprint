@@ -1,6 +1,5 @@
 ﻿using Blueprint.Infrastructure.Common.Settings;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
@@ -13,8 +12,8 @@ public static class JwtAuthenticationExtensions
 {
     public static IServiceCollection AddJwtAuthentication(this IServiceCollection services, IConfiguration configuration)
     {
-        var settings = configuration.GetRequiredSection(nameof(TokenSettings))
-                         .Get<TokenSettings>()!;
+        var settings = configuration.GetRequiredSection(nameof(JwtSettings))
+                         .Get<JwtSettings>()!;
 
 
         services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
@@ -40,27 +39,27 @@ public static class JwtAuthenticationExtensions
                 };
 
 
-                options.Events = new JwtBearerEvents
-                {
-                    OnChallenge = context =>
-                    {
-                        context.HandleResponse();
+                //options.Events = new JwtBearerEvents
+                //{
+                //    OnChallenge = context =>
+                //    {
+                //        context.HandleResponse();
 
-                        var problem = CreateProblemDetails(context.HttpContext, StatusCodes.Status401Unauthorized,
-                            "Unauthorized", "Authentication is required to access this resource.");
+                //        var problem = CreateProblemDetails(context.HttpContext, StatusCodes.Status401Unauthorized,
+                //            "Unauthorized", "Authentication is required to access this resource.");
 
-                        return context.HttpContext.WriteProblemDetailsAsync(problem, context.HttpContext.RequestAborted);
-                    },
+                //        return context.HttpContext.WriteProblemDetailsAsync(problem, context.HttpContext.RequestAborted);
+                //    },
 
 
-                    OnForbidden = context =>
-                    {
-                        var problem = CreateProblemDetails(context.HttpContext, StatusCodes.Status403Forbidden,
-                            "Forbidden", "You do not have permission to access this resource.");
+                //    OnForbidden = context =>
+                //    {
+                //        var problem = CreateProblemDetails(context.HttpContext, StatusCodes.Status403Forbidden,
+                //            "Forbidden", "You do not have permission to access this resource.");
 
-                        return context.HttpContext.WriteProblemDetailsAsync(problem, context.HttpContext.RequestAborted);
-                    }
-                };
+                //        return context.HttpContext.WriteProblemDetailsAsync(problem, context.HttpContext.RequestAborted);
+                //    }
+                //};
             });
 
         return services;
