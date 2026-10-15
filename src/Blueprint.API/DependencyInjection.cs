@@ -1,6 +1,6 @@
 
-using Blueprint.Application;
-using Blueprint.Infrastructure;
+using Blueprint.API.Infrastructure.Configurations;
+using Blueprint.API.Infrastructure.Handlers;
 
 namespace Blueprint.API;
 
@@ -10,6 +10,17 @@ public static class DependencyInjection
         this IServiceCollection services,
         IConfiguration configuration)
     {
+
+
+        services.AddAuthorization();
+
+        services.AddProblemDetails();
+        services.AddExceptionHandler<GlobalExceptionHandler>();
+
+        services.AddSwaggerConfiguration();
+        services.AddApiVersioningConfiguration();
+
+
         var allowedOrigins = configuration
             .GetSection("Cors:AllowedOrigins")
             .Get<string[]>() ?? [];
@@ -25,11 +36,6 @@ public static class DependencyInjection
             });
         });
 
-
-
-
-        services.AddApplicationServices();
-        services.AddInfrastructureServices(configuration);
         return services;
     }
 }

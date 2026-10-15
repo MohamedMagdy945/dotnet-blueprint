@@ -1,8 +1,9 @@
 using Blueprint.API.Extensions;
-using Blueprint.API.Infrastructure.Handlers;
+using Blueprint.API.Infrastructure.Configurations;
 using Blueprint.API.Infrastructure.Middlewares;
+using Blueprint.Application;
+using Blueprint.Infrastructure;
 using Serilog;
-using Serilog.Enrichers.Span;
 
 namespace Blueprint.API;
 
@@ -10,25 +11,22 @@ public static class Program
 {
     public static void Main(string[] args)
     {
-        Log.Logger = new LoggerConfiguration()
-            .WriteTo.Console()
-            .CreateBootstrapLogger();
+        LoggingConfiguration.ConfigureBootstrapLogger();
+
 
         try
         {
             var builder = WebApplication.CreateBuilder(args);
 
-            // 1. Serilog Setup
-            builder.Host.UseSerilog((context, services, configuration) => configuration
-            .ReadFrom.Configuration(context.Configuration)
-            .ReadFrom.Services(services)
-            .Enrich.FromLogContext()
-            .Enrich.WithSpan());
-            builder.Services.AddAuthorization();
-            builder.Services.AddApiServices(builder.Configuration);
 
-            builder.Services.AddProblemDetails();
-            builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
+            // 1. Serilog Setup
+            builder.AddSerilogLogging();
+
+            builder.Services.AddApplicationServices();
+
+            builder.Services.AddInfrastructureServices(builder.Configuration);
+
+            builder.Services.AddApiServices(builder.Configuration);
 
             var app = builder.Build();
 

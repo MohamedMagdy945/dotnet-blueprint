@@ -12,11 +12,11 @@ public sealed class RefreshTokenConfiguration : IEntityTypeConfiguration<Refresh
 
         builder.HasKey(t => t.Id);
 
-        builder.Property(t => t.Token)
+        builder.Property(t => t.TokenHash)
             .IsRequired()
             .HasMaxLength(200);
 
-        builder.HasIndex(t => t.Token)
+        builder.HasIndex(t => t.TokenHash)
             .IsUnique();
 
         builder.Property(t => t.ExpiresOnUtc)

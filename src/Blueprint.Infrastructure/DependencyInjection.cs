@@ -1,4 +1,6 @@
+using Blueprint.Application.Common.Abstractions;
 using Blueprint.Infrastructure.Persistence;
+using Blueprint.Infrastructure.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -12,8 +14,13 @@ public static class DependencyInjection
         var connectionString = configuration
           .GetConnectionString("DefaultConnection");
 
-        services.AddDbContext<AppDbContext>(options =>
-            options.UseSqlServer(connectionString));
+        services.AddDbContext<IAppDbContext, AppDbContext>(options =>
+        {
+            options.UseSqlServer(connectionString);
+        });
+
+        services.AddSingleton<IPasswordHasher, PasswordHasher>();
+
 
         return services;
     }
