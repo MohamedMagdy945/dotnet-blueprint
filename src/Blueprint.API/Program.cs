@@ -13,9 +13,10 @@ public static class Program
     {
         LoggingConfiguration.ConfigureBootstrapLogger();
 
-
         try
         {
+            DotNetEnv.Env.Load();
+
             var builder = WebApplication.CreateBuilder(args);
 
 
@@ -28,7 +29,13 @@ public static class Program
 
             builder.Services.AddApiServices(builder.Configuration);
 
+
             var app = builder.Build();
+
+
+            // Print The Configuration Sections to the Console for Debugging Purposes
+            app.Configuration.PrintAllSections();
+
 
             // 3. Configure the HTTP Request Pipeline
             app.UseSwaggerDocumentation();

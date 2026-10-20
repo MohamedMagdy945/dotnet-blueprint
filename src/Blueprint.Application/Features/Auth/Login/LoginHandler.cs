@@ -22,7 +22,7 @@ public class LoginHandler(
         var credentials = await dbContext.Users
             .AsNoTracking()
             .Where(x => x.Email == email)
-            .SelectLoginCredentials()
+            .SelectLoginUserData()
             .SingleOrDefaultAsync(ct);
 
         if (credentials is null || !credentials.IsActive || !passwordHasher.Verify(request.Password, credentials.PasswordHash))

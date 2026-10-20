@@ -4,9 +4,9 @@ namespace Blueprint.Application.Features.Auth.Login;
 
 public static class LoginProjection
 {
-    public static IQueryable<LoginCredentials> SelectLoginCredentials(this IQueryable<User> query)
+    public static IQueryable<LoginUserData> SelectLoginUserData(this IQueryable<User> query)
     {
-        return query.Select(x => new LoginCredentials
+        return query.Select(x => new LoginUserData
         {
             Id = x.Id,
             Email = x.Email,

@@ -1,6 +1,6 @@
 ﻿namespace Blueprint.Application.Features.Auth.Login;
 
-public sealed class LoginCredentials
+public sealed class LoginUserData
 {
     public Guid Id { get; init; }
     public string Email { get; init; } = default!;

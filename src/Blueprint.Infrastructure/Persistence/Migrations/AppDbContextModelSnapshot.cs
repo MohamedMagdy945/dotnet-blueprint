@@ -22,7 +22,27 @@ namespace Blueprint.Infrastructure.Persistence.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("Blueprint.Domain.Entities.Auth.RefreshToken", b =>
+            modelBuilder.Entity("Blueprint.Domain.Entities.Product", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(150)
+                        .HasColumnType("nvarchar(150)");
+
+                    b.Property<decimal>("Price")
+                        .HasPrecision(18, 2)
+                        .HasColumnType("decimal(18,2)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Products", (string)null);
+                });
+
+            modelBuilder.Entity("Blueprint.Domain.Entities.RefreshToken", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -41,7 +61,7 @@ namespace Blueprint.Infrastructure.Persistence.Migrations
                     b.Property<DateTime?>("RevokedOnUtc")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("Token")
+                    b.Property<string>("TokenHash")
                         .IsRequired()
                         .HasMaxLength(200)
                         .HasColumnType("nvarchar(200)");
@@ -51,7 +71,7 @@ namespace Blueprint.Infrastructure.Persistence.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("Token")
+                    b.HasIndex("TokenHash")
                         .IsUnique();
 
                     b.HasIndex("UserId");
@@ -59,7 +79,7 @@ namespace Blueprint.Infrastructure.Persistence.Migrations
                     b.ToTable("RefreshTokens", (string)null);
                 });
 
-            modelBuilder.Entity("Blueprint.Domain.Entities.Auth.Role", b =>
+            modelBuilder.Entity("Blueprint.Domain.Entities.Role", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -82,7 +102,7 @@ namespace Blueprint.Infrastructure.Persistence.Migrations
                     b.ToTable("Roles", (string)null);
                 });
 
-            modelBuilder.Entity("Blueprint.Domain.Entities.Auth.User", b =>
+            modelBuilder.Entity("Blueprint.Domain.Entities.User", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -130,7 +150,7 @@ namespace Blueprint.Infrastructure.Persistence.Migrations
                     b.ToTable("Users", (string)null);
                 });
 
-            modelBuilder.Entity("Blueprint.Domain.Entities.Auth.UserRole", b =>
+            modelBuilder.Entity("Blueprint.Domain.Entities.UserRole", b =>
                 {
                     b.Property<Guid>("UserId")
                         .HasColumnType("uniqueidentifier");
@@ -145,29 +165,9 @@ namespace Blueprint.Infrastructure.Persistence.Migrations
                     b.ToTable("UserRoles", (string)null);
                 });
 
-            modelBuilder.Entity("Blueprint.Domain.Entities.Product", b =>
+            modelBuilder.Entity("Blueprint.Domain.Entities.RefreshToken", b =>
                 {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(150)
-                        .HasColumnType("nvarchar(150)");
-
-                    b.Property<decimal>("Price")
-                        .HasPrecision(18, 2)
-                        .HasColumnType("decimal(18,2)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Products", (string)null);
-                });
-
-            modelBuilder.Entity("Blueprint.Domain.Entities.Auth.RefreshToken", b =>
-                {
-                    b.HasOne("Blueprint.Domain.Entities.Auth.User", "User")
+                    b.HasOne("Blueprint.Domain.Entities.User", "User")
                         .WithMany("RefreshTokens")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -176,15 +176,15 @@ namespace Blueprint.Infrastructure.Persistence.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("Blueprint.Domain.Entities.Auth.UserRole", b =>
+            modelBuilder.Entity("Blueprint.Domain.Entities.UserRole", b =>
                 {
-                    b.HasOne("Blueprint.Domain.Entities.Auth.Role", "Role")
+                    b.HasOne("Blueprint.Domain.Entities.Role", "Role")
                         .WithMany("UserRoles")
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Blueprint.Domain.Entities.Auth.User", "User")
+                    b.HasOne("Blueprint.Domain.Entities.User", "User")
                         .WithMany("UserRoles")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -195,12 +195,12 @@ namespace Blueprint.Infrastructure.Persistence.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("Blueprint.Domain.Entities.Auth.Role", b =>
+            modelBuilder.Entity("Blueprint.Domain.Entities.Role", b =>
                 {
                     b.Navigation("UserRoles");
                 });
 
-            modelBuilder.Entity("Blueprint.Domain.Entities.Auth.User", b =>
+            modelBuilder.Entity("Blueprint.Domain.Entities.User", b =>
                 {
                     b.Navigation("RefreshTokens");
 
