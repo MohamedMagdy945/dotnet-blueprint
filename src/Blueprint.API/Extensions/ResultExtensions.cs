@@ -13,16 +13,16 @@ public static class ResultExtensions
             return Results.Ok(result.Value);
         }
 
-        var statusCode = result.ErrorCode switch
+        var (statusCode, title) = result.ErrorCode switch
         {
-            ErrorCode.NotFound => StatusCodes.Status404NotFound,
-            ErrorCode.AlreadyExists => StatusCodes.Status409Conflict,
-            ErrorCode.ValidationFailed => StatusCodes.Status400BadRequest,
-            _ => StatusCodes.Status400BadRequest
+            ErrorCode.NotFound => (StatusCodes.Status404NotFound, "Not Found"),
+            ErrorCode.AlreadyExists => (StatusCodes.Status409Conflict, "Conflict"),
+            ErrorCode.ValidationFailed => (StatusCodes.Status400BadRequest, "Bad Request"),
+            _ => (StatusCodes.Status400BadRequest, "Bad Request")
         };
 
-        return Results.Problem(
-            statusCode: statusCode,
+        return Results.Problem(statusCode: statusCode,
+            title: title,
             detail: result.ErrorMessage);
     }
 

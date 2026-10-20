@@ -1,4 +1,6 @@
 using Blueprint.Application.Common.Abstractions;
+using Blueprint.Infrastructure.Common.Extensions;
+using Blueprint.Infrastructure.Common.Settings;
 using Blueprint.Infrastructure.Persistence;
 using Blueprint.Infrastructure.Services;
 using Microsoft.EntityFrameworkCore;
@@ -19,8 +21,16 @@ public static class DependencyInjection
             options.UseSqlServer(connectionString);
         });
 
+
+        services.Configure<Jwt>
+            (configuration.GetSection("Jwt"));
+
+        services.AddJwtAuthentication(configuration);
+
+
         services.AddSingleton<IPasswordHasher, PasswordHasher>();
         services.AddSingleton<IJwtService, JwtService>();
+
 
 
         return services;

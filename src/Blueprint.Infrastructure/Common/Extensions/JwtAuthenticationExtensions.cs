@@ -14,9 +14,8 @@ public static class JwtAuthenticationExtensions
 {
     public static IServiceCollection AddJwtAuthentication(this IServiceCollection services, IConfiguration configuration)
     {
-        var settings = configuration.GetRequiredSection(nameof(JwtSettings))
-                         .Get<JwtSettings>()!;
-
+        var settings = configuration.GetRequiredSection(nameof(Jwt))
+                         .Get<Jwt>()!;
 
         services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             .AddJwtBearer(options =>
@@ -25,6 +24,7 @@ public static class JwtAuthenticationExtensions
 
                 options.TokenValidationParameters = new TokenValidationParameters
                 {
+                    NameClaimType = "sub",
                     RoleClaimType = "role",
                     ValidateIssuer = true,
                     ValidateAudience = true,
@@ -34,7 +34,7 @@ public static class JwtAuthenticationExtensions
                     ValidIssuer = settings.Issuer,
                     ValidAudience = settings.Audience,
 
-                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(settings.SecretKey)),
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(settings.Key)),
 
                     ClockSkew = TimeSpan.Zero
 
@@ -45,6 +45,8 @@ public static class JwtAuthenticationExtensions
                     OnChallenge = async context =>
                     {
                         context.HandleResponse();
+
+                        if (context.Response.HasStarted) return;
 
                         var problemDetailsService = context.HttpContext.RequestServices.GetRequiredService<IProblemDetailsService>();
 

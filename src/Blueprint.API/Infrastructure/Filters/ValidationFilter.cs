@@ -1,4 +1,5 @@
 using FluentValidation;
+using System.Text.Json;
 
 namespace Blueprint.API.Infrastructure.Filters;
 
@@ -24,12 +25,10 @@ public sealed class ValidationFilter<TRequest>(
             return await next(context);
 
         var errors = result.Errors
-            .GroupBy(error => error.PropertyName)
-            .ToDictionary(
-                group => group.Key,
-                group => group
-                    .Select(error => error.ErrorMessage)
-                    .ToArray());
+                 .GroupBy(error => JsonNamingPolicy.CamelCase.ConvertName(error.PropertyName))
+                 .ToDictionary(
+                     group => group.Key,
+                     group => group.Select(error => error.ErrorMessage).ToArray());
 
         return Results.ValidationProblem(
             errors,

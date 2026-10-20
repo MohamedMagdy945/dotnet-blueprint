@@ -10,6 +10,7 @@ public sealed class Create : IEndpoint
         app.MapPost("orders", HandleAsync)
             .WithName("CreateOrder")
             .WithTags("Orders")
+            .RequireAuthorization(policy => policy.RequireRole("User"))
             .WithValidation<CreateOrderRequest>()
             .Produces<CreateOrderResponse>(StatusCodes.Status201Created)
             .ProducesProblem(StatusCodes.Status400BadRequest);

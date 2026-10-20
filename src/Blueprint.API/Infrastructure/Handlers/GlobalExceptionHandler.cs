@@ -11,20 +11,18 @@ public sealed class GlobalExceptionHandler(IProblemDetailsService problemDetails
         Exception exception,
         CancellationToken cancellationToken)
     {
+        if (httpContext.Response.HasStarted)
+        {
+            logger.LogWarning("The response has already started, exception handler cannot write ProblemDetails.");
+            return false;
+        }
+
         var (statusCode, title, detail) = exception switch
         {
             BadHttpRequestException => (
                 StatusCodes.Status400BadRequest,
                 "Bad Request",
                 "A non-empty or valid request body is required."
-            ),
-            UnauthorizedAccessException => (StatusCodes.Status401Unauthorized, "Unauthorized",
-                "You are not authorized to access this resource."
-            ),
-            KeyNotFoundException => (
-                StatusCodes.Status404NotFound,
-                "Not Found",
-                exception.Message
             ),
             _ => (
                 StatusCodes.Status500InternalServerError,

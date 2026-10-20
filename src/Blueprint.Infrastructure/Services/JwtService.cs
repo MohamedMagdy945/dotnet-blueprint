@@ -9,17 +9,17 @@ using System.Text;
 
 namespace Blueprint.Infrastructure.Services;
 
-public class JwtService(IOptions<JwtSettings> options) : IJwtService
+public class JwtService(IOptions<Jwt> options) : IJwtService
 {
     private const string Roles = "roles";
     private const int RefreshTokenSize = 32;
 
-    private readonly JwtSettings _settings = options.Value;
+    private readonly Jwt _settings = options.Value;
 
     private static readonly JsonWebTokenHandler JwtHandler = new();
 
     private readonly SigningCredentials _signingCredentials = new(
-        new SymmetricSecurityKey(Encoding.UTF8.GetBytes(options.Value.SecretKey)), SecurityAlgorithms.HmacSha256);
+        new SymmetricSecurityKey(Encoding.UTF8.GetBytes(options.Value.Key)), SecurityAlgorithms.HmacSha256);
 
 
     public AccessTokenResult GenerateAccessToken(UserClaims userClaims)

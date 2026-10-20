@@ -10,7 +10,6 @@ public static class EndpointRegistrationExtensions
         this IEndpointRouteBuilder app,
         Assembly assembly)
     {
-        // 1. تعريف الـ ApiVersionSet
         var apiVersionSet = app.NewApiVersionSet()
             .HasApiVersion(new ApiVersion(1, 0))
             .HasApiVersion(new ApiVersion(2, 0))

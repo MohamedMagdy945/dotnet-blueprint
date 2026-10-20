@@ -34,7 +34,7 @@ public static class Program
 
 
             // Print The Configuration Sections to the Console for Debugging Purposes
-            app.Configuration.PrintAllSections();
+            //app.Configuration.PrintAllSections();
 
 
             // 3. Configure the HTTP Request Pipeline
@@ -47,6 +47,7 @@ public static class Program
             app.UseCors();
 
             app.UseAuthorization();
+            app.UseAuthentication();
 
             app.MapEndpoints(typeof(Program).Assembly);
 
